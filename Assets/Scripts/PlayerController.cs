@@ -16,8 +16,14 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private Vector3 moveDirection = Vector3.zero;
     private float health;
-    private bool isAttacking = false;
+    [SerializeField] private bool isAttacking = false;
     private float attackTimer = 0.0f;
+    [SerializeField] private KeyCode jumpKey;
+    [SerializeField] private KeyCode moveRight;
+    [SerializeField] private KeyCode moveLeft;
+    [SerializeField] private KeyCode block;
+    [SerializeField] private KeyCode punch;
+    [SerializeField] private KeyCode kick;
 
     // Start is called before the first frame update
     void Start()
@@ -34,9 +40,8 @@ public class PlayerController : MonoBehaviour
         if (!isAttacking)
         {
             float horizontalInput = Input.GetAxis("Horizontal");
-            float verticalInput = Input.GetAxis("Vertical");
 
-            moveDirection = new Vector3(horizontalInput, 0.0f, verticalInput);
+            moveDirection = new Vector3(horizontalInput, 0.0f, 0.0f);
             moveDirection *= moveSpeed;
 
             if (controller.isGrounded)
@@ -46,15 +51,8 @@ public class PlayerController : MonoBehaviour
                     moveDirection.y = jumpSpeed;
                 }
             }
-
             moveDirection.y -= gravity * Time.deltaTime;
             controller.Move(moveDirection * Time.deltaTime);
-
-            // Flip character sprite to face movement direction
-            if (moveDirection != Vector3.zero)
-            {
-                transform.rotation = Quaternion.LookRotation(moveDirection);
-            }
         }
 
         // Handle attacking
