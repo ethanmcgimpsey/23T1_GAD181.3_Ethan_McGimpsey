@@ -75,9 +75,9 @@ public class PlayerController : MonoBehaviour
         }
 
         // Handle attacking
-        if (Input.GetKey(punch) && !isAttacking && attackTimer <= 0.0f)
+        if (Input.GetKeyDown(punch) && !isAttacking && attackTimer <= 0.0f)
         {
-            anim.SetTrigger("Punch");
+            anim.SetBool("Punch", true);
             isAttacking = true;
             attackTimer = attackCooldown;
 
@@ -92,6 +92,12 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+        else if (Input.GetKeyDown(kick) && !isAttacking && attackTimer <= 0.0f)
+        {
+            anim.SetBool("Kick", true);
+            isAttacking = true;
+            attackTimer = attackCooldown;
+        }
 
         // Update attack timer
         if (isAttacking)
@@ -101,6 +107,8 @@ public class PlayerController : MonoBehaviour
             if (attackTimer <= 0.0f)
             {
                 isAttacking = false;
+                anim.SetBool("Punch", false);
+                anim.SetBool("Kick", false);
             }
         }
     }
@@ -120,7 +128,7 @@ public class PlayerController : MonoBehaviour
     // Handle dying
     private void Die()
     {
-        anim.SetTrigger("die");
+        anim.SetFloat("Die", 1);
         controller.enabled = false;
         this.enabled = false;
     }

@@ -318,7 +318,7 @@ MonoBehaviour:
   maxHealth: 100
   attackRange: 2
   attackDamage: 20
-  attackCooldown: 0.5
+  attackCooldown: 0.6
   attackTimer: 0
   controller: {fileID: 0}
   anim: {fileID: 0}
@@ -1899,8 +1899,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.46, y: 1.51, z: 2.15}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.46, y: 1.51, z: 0.75181663}
+  m_Center: {x: 0, y: 0, z: -0.69909173}
 --- !u!1 &6846826515129440204
 GameObject:
   m_ObjectHideFlags: 0
