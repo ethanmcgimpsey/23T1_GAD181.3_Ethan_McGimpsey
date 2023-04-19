@@ -11,13 +11,13 @@ public class PlayerController : MonoBehaviour
     public float attackRange = 2.0f;
     public float attackDamage = 20.0f;
     public float attackCooldown = 0.5f;
+    public float attackTimer = 0.0f;
 
-    private CharacterController controller;
-    private Animator animator;
-    private Vector3 moveDirection = Vector3.zero;
-    private float health;
+    [SerializeField] private CharacterController controller;
+    [SerializeField] private Animator anim;
+    [SerializeField] private Vector3 moveDirection = Vector3.zero;
+    [SerializeField] private float health;
     [SerializeField] private bool isAttacking = false;
-    private float attackTimer = 0.0f;
     [SerializeField] private KeyCode jumpKey;
     [SerializeField] private KeyCode moveRight;
     [SerializeField] private KeyCode moveLeft;
@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
-        animator = GetComponent<Animator>();
+        anim = GetComponent<Animator>();
         health = maxHealth;
     }
 
@@ -39,16 +39,35 @@ public class PlayerController : MonoBehaviour
         // If not attacking, handle movement
         if (!isAttacking)
         {
-            float horizontalInput = Input.GetAxis("Horizontal");
+            moveDirection = new Vector3(0, moveDirection.y, 0);
 
-            moveDirection = new Vector3(horizontalInput, 0.0f, 0.0f);
-            moveDirection *= moveSpeed;
+            anim.SetBool("Idle", true);
+            anim.SetBool("IsWalkingForward", false);
+            anim.SetBool("IsWalkingBackward", false);
+            if (Input.GetKey(moveRight))
+            {
+                // Move Right
+                moveDirection = new Vector3(1, moveDirection.y, 0) * moveSpeed * Time.deltaTime;
+                anim.SetBool("Idle", false);
+                anim.SetBool("IsWalkingBackward", true);
+            }
+            if (Input.GetKey(moveLeft))
+            {
+                // Move Left
+                moveDirection = new Vector3(-1, moveDirection.y, 0) * moveSpeed * Time.deltaTime;
+                anim.SetBool("Idle", false);
+                anim.SetBool("IsWalkingForward", true);
+            }
 
             if (controller.isGrounded)
             {
-                if (Input.GetButton("Jump"))
+                if (Input.GetKey(jumpKey))
                 {
                     moveDirection.y = jumpSpeed;
+                }
+                else
+                {
+                    moveDirection.y = 0;
                 }
             }
             moveDirection.y -= gravity * Time.deltaTime;
@@ -56,9 +75,9 @@ public class PlayerController : MonoBehaviour
         }
 
         // Handle attacking
-        if (Input.GetButtonDown("Fire1") && !isAttacking && attackTimer <= 0.0f)
+        if (Input.GetKey(punch) && !isAttacking && attackTimer <= 0.0f)
         {
-            animator.SetTrigger("attack");
+            anim.SetTrigger("Punch");
             isAttacking = true;
             attackTimer = attackCooldown;
 
@@ -90,7 +109,7 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(float damage)
     {
         health -= damage;
-        animator.SetTrigger("hurt");
+        anim.SetTrigger("hurt");
 
         if (health <= 0.0f)
         {
@@ -101,7 +120,7 @@ public class PlayerController : MonoBehaviour
     // Handle dying
     private void Die()
     {
-        animator.SetTrigger("die");
+        anim.SetTrigger("die");
         controller.enabled = false;
         this.enabled = false;
     }
