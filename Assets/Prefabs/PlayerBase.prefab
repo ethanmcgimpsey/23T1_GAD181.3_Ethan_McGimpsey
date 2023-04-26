@@ -259,6 +259,7 @@ Transform:
   - {fileID: 4210234650677266228}
   - {fileID: 6038847803337319567}
   - {fileID: 7516245339471171887}
+  - {fileID: 29579673360865767}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -317,11 +318,13 @@ MonoBehaviour:
   gravity: 15
   maxHealth: 100
   attackRange: 2
-  attackDamage: 20
-  attackCooldown: 0.6
+  attackDamage: 15
+  attackCooldown: 0.55
   attackTimer: 0
   controller: {fileID: 0}
   anim: {fileID: 0}
+  punchCollider: {fileID: 1063344603929367607}
+  kickCollider: {fileID: 346944961887604536}
   moveDirection: {x: 0, y: 0, z: 0}
   health: 0
   isAttacking: 0
@@ -1866,8 +1869,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7516245339471171887}
   - component: {fileID: 1063344603929367607}
+  - component: {fileID: 5935318405661537277}
   m_Layer: 0
-  m_Name: Attack HitBox
+  m_Name: Attack HitBox Punch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1896,11 +1900,24 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6799621662463352816}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
+  m_IsTrigger: 1
+  m_Enabled: 0
   serializedVersion: 2
-  m_Size: {x: 0.46, y: 1.51, z: 0.75181663}
-  m_Center: {x: 0, y: 0, z: -0.69909173}
+  m_Size: {x: 0.46, y: 0.63691366, z: 0.87}
+  m_Center: {x: 0, y: 0.25074822, z: -0.69909173}
+--- !u!114 &5935318405661537277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6799621662463352816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b26e7c8a730bbb40af5203e6b613fe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerController: {fileID: 1501333052099370684}
 --- !u!1 &6846826515129440204
 GameObject:
   m_ObjectHideFlags: 0
@@ -1964,6 +1981,65 @@ Transform:
   m_Father: {fileID: 748561389554952220}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 83.079155, y: 89.23551, z: 96.161224}
+--- !u!1 &6944828938501985886
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 29579673360865767}
+  - component: {fileID: 346944961887604536}
+  - component: {fileID: 3198857041002775173}
+  m_Layer: 0
+  m_Name: Attack HitBox Kick
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &29579673360865767
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6944828938501985886}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 1.07}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2278292375654614043}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &346944961887604536
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6944828938501985886}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.46, y: 1.0717046, z: 1.2996856}
+  m_Center: {x: 0, y: -0.46070826, z: -0.42515725}
+--- !u!114 &3198857041002775173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6944828938501985886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b26e7c8a730bbb40af5203e6b613fe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerController: {fileID: 1501333052099370684}
 --- !u!1 &7083001081996400243
 GameObject:
   m_ObjectHideFlags: 0

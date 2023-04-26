@@ -8,13 +8,14 @@ public class PlayerController : MonoBehaviour
     public float jumpSpeed = 10.0f;
     public float gravity = 20.0f;
     public float maxHealth = 100.0f;
-    public float attackRange = 2.0f;
     public float attackDamage = 20.0f;
     public float attackCooldown = 0.5f;
     public float attackTimer = 0.0f;
 
     [SerializeField] private CharacterController controller;
     [SerializeField] private Animator anim;
+    [SerializeField] private BoxCollider punchCollider;
+    [SerializeField] private BoxCollider kickCollider;
     [SerializeField] private Vector3 moveDirection = Vector3.zero;
     [SerializeField] private float health;
     [SerializeField] private bool isAttacking = false;
@@ -80,23 +81,14 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("Punch", true);
             isAttacking = true;
             attackTimer = attackCooldown;
-
-            // Check for hit on enemy
-            Collider[] hits = Physics.OverlapSphere(transform.position, attackRange);
-
-            foreach (Collider hit in hits)
-            {
-                if (hit.gameObject.CompareTag("Enemy"))
-                {
-                    hit.gameObject.SendMessage("TakeDamage", attackDamage);
-                }
-            }
+            ActivateHitBoxPunch(true);
         }
         else if (Input.GetKeyDown(kick) && !isAttacking && attackTimer <= 0.0f)
         {
             anim.SetBool("Kick", true);
             isAttacking = true;
             attackTimer = attackCooldown;
+            ActivateHitBoxKick(true);
         }
 
         // Update attack timer
@@ -109,6 +101,8 @@ public class PlayerController : MonoBehaviour
                 isAttacking = false;
                 anim.SetBool("Punch", false);
                 anim.SetBool("Kick", false);
+                ActivateHitBoxPunch(false);
+                ActivateHitBoxKick(false);
             }
         }
     }
@@ -125,10 +119,20 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void ActivateHitBoxKick(bool isActive)
+    {
+        kickCollider.enabled = isActive;
+    }
+
+    public void ActivateHitBoxPunch(bool isActive)
+    {
+        punchCollider.enabled = isActive;
+    }
+
     // Handle dying
     private void Die()
     {
-        anim.SetFloat("Die", 1);
+        anim.SetFloat("Die", 0);
         controller.enabled = false;
         this.enabled = false;
     }
