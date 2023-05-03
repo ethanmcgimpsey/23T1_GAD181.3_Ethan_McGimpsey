@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -8,17 +9,19 @@ public class PlayerController : MonoBehaviour
     public float jumpSpeed = 10.0f;
     public float gravity = 20.0f;
     public float maxHealth = 100.0f;
+    public float health;
     public float attackDamage = 20.0f;
     public float attackCooldown = 0.5f;
     public float attackTimer = 0.0f;
 
     [SerializeField] private CharacterController controller;
+    [SerializeField] private GameManager gameManager;
     [SerializeField] private Animator anim;
     [SerializeField] private BoxCollider punchCollider;
     [SerializeField] private BoxCollider kickCollider;
     [SerializeField] private Vector3 moveDirection = Vector3.zero;
-    [SerializeField] private float health;
     [SerializeField] private bool isAttacking = false;
+    [SerializeField] private bool isBlocking = false;
     [SerializeField] private KeyCode jumpKey;
     [SerializeField] private KeyCode moveRight;
     [SerializeField] private KeyCode moveLeft;
@@ -58,6 +61,17 @@ public class PlayerController : MonoBehaviour
                 moveDirection = new Vector3(-1, moveDirection.y, 0) * moveSpeed * Time.deltaTime;
                 anim.SetBool("Idle", false);
                 anim.SetBool("IsWalkingForward", true);
+            }
+
+            if (Input.GetKey(block))
+            {
+                anim.SetBool("Block", true);
+                isBlocking = true;
+            }
+            else
+            {
+                anim.SetBool("Block", false);
+                isBlocking = false;
             }
 
             if (controller.isGrounded)
@@ -110,8 +124,26 @@ public class PlayerController : MonoBehaviour
     // Handle taking damage
     public void TakeDamage(float damage)
     {
+        if (isBlocking)     
+        {
+            return;
+        }
+
         health -= damage;
         anim.SetTrigger("hurt");
+
+        print("TRANSFORM: " + transform.name);
+        print("TAG: " + transform.tag);
+
+        if (transform.tag == "Player Red")
+        {
+            gameManager.healthRedText.text = "HP: " + health;
+
+        }
+        else if (transform.tag == "Player Blue")
+        {
+            gameManager.healthBlueText.text = "HP: " + health;
+        }
 
         if (health <= 0.0f)
         {
